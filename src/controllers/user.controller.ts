@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
@@ -32,7 +33,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
         if (!db) throw new Error("Database not connected");
 
         const result = await db.collection("user").updateOne(
-            { _id: id },
+            { _id: new ObjectId(id as string) },
             { $set: { role } }
         );
 
@@ -54,7 +55,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const db = mongoose.connection.db;
         if (!db) throw new Error("Database not connected");
 
-        const result = await db.collection("user").deleteOne({ _id: id });
+        const result = await db.collection("user").deleteOne({ _id: new ObjectId(id as string) });
 
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "User not found" });
