@@ -55,7 +55,15 @@ export const sendMessage = async (req: Request, res: Response) => {
 
         res.status(200).json({ chatId: chat._id, reply: aiReply, chat });
     } catch (error) {
+        console.error("--- ERROR START ---");
         console.error("ERROR in sendMessage:", error);
+        if (error instanceof Error) {
+             console.error("Error Message:", error.message);
+             console.error("Error Stack:", error.stack);
+        } else {
+             console.error("Non-Error object thrown:", error);
+        }
+        console.error("--- ERROR END ---");
         res.status(500).json({ message: "Something went wrong", error: (error as Error).message });
     }
 };
