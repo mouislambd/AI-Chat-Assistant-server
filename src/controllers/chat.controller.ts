@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Chat from "../models/chat.model";
-import { groq } from "../lib/groq";
+import { callGroqChatCompletion } from "../utils/groqHelper";
 
 const SYSTEM_PROMPT = `You are SkillPath AI, a friendly career and study mentor for students. 
 Help with study roadmaps, career advice, resource suggestions, and general learning questions. 
@@ -38,8 +38,7 @@ export const sendMessage = async (req: Request, res: Response) => {
             content: m.content,
         }));
 
-        const completion = await groq.chat.completions.create({
-            model: "openai/gpt-oss-120b",
+        const completion = await callGroqChatCompletion({
             messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
         });
 

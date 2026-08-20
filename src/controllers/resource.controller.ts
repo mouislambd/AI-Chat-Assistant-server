@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Resource from "../models/resource.model";
-import { groq } from "../lib/groq";
+import { callGroqChatCompletion } from "../utils/groqHelper";
 
 export const createResource = async (req: Request, res: Response) => {
     try {
@@ -58,8 +58,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
         
         const resourceContext = resources.map(r => `ID: ${r._id}, Title: ${r.title}, Description: ${r.description}, Category: ${r.category}`).join("\n");
 
-        const completion = await groq.chat.completions.create({
-            model: "openai/gpt-oss-120b",
+        const completion = await callGroqChatCompletion({
             messages: [
                 { 
                     role: "system", 
