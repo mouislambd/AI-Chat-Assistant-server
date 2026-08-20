@@ -59,7 +59,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
         const resourceContext = resources.map(r => `ID: ${r._id}, Title: ${r.title}, Description: ${r.description}, Category: ${r.category}`).join("\n");
 
         const completion = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-120b",
             messages: [
                 { 
                     role: "system", 
